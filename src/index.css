@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/*vars*/
+@theme{
+    --color-featured : #15FF00;
+}
