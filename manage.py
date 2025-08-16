@@ -16,6 +16,11 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+    #api path
+    current_path = Path(__name__).parent.resolve()
+    api_path = join(current_path,'api') 
+    sys.path.append(api_path)
+    
     execute_from_command_line(sys.argv)
 
 
