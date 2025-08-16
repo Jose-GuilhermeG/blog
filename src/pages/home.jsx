@@ -1,7 +1,8 @@
+import NavBar from "../layout/NavBar"
 
 function App() {
 
-  return (<h1>app</h1>)
+  return (<NavBar/>)
     
 }
 
