@@ -1,6 +1,7 @@
 # Application definition
 
 PROJECT_APPS = [
+    'account',
     'core',
 ]
 
