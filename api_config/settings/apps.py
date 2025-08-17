@@ -16,6 +16,7 @@ DJANGO_APPS = [
 
 THIRD_INSTALLED_APPS = [
     'rest_framework',
+    'rest_framework_simplejwt',
     'django_filters',
     'drf_spectacular',
     

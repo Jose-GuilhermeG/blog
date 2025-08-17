@@ -12,5 +12,8 @@ DATABASES = {
         "HOST": env("DATABASE_HOST"),
         "PORT": "3306",
         "ATOMIC_REQUESTS" : True
+    },
+    'test' : {
+        'NAME' : f'test_{env("DATABASE_NAME")}'
     }
 }
