@@ -27,16 +27,47 @@ class RegisterSerializer(serializers.ModelSerializer):
             'image',
         )
         
+        extra_kwargs = {'password' : {'write_only': True}}
+        
     def validate(self,data):
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError(_("Passwords do not match."))
         
+        data.pop('confirm_password')
+        
         return data
         
     def save(self, **kwargs):
-        fields = self.data
+        fields = self.validated_data
         password = fields.pop('password')
         user = USER(**fields)
         user.set_password(password)
         user.save()
+        return user
+    
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(
+        required=True,
+        style={'input_type': 'text'}
+    )
+    
+    password = serializers.CharField(
+        required=True,
+        style={'input_text' : 'password'},
+        write_only=True
+    )
+        
+    def validate(self, data):
+        user = USER.objects.filter(username=data.get('username')).first()
+        
+        if not user:
+            raise serializers.ValidationError(_("User not found."))
+        
+        if not user.check_password(data.get('password')):
+            raise serializers.ValidationError(_("Incorrect password."))
+        
+        return data
+    
+    def save(self, **kwargs):
+        user = USER.objects.get(username=self.data.get('username'))
         return user
