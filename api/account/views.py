@@ -55,4 +55,3 @@ class LoginView(
         self.set_message(response)
         return response
     
-    

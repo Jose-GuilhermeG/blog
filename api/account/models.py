@@ -56,3 +56,47 @@ class User(
         verbose_name = _("Usuario")
         verbose_name_plural = _("Usuarios")
         ordering = ['-created_at']
+        
+from api.core.models import BaseModel
+
+class Profile(
+    BaseModel
+):
+    
+    user = models.OneToOneField(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='profile',
+        verbose_name=_("Perfil do usuario"),
+        null=False
+    )
+    
+    banner = models.ImageField(
+        verbose_name=_("Banner do perfil"),
+        upload_to='users/banners/',
+        blank=True,
+        null=True,
+        help_text=_("Optional. Upload an image for the profile banner.")
+    )
+    
+    bio = models.TextField(
+        verbose_name=_("Biografia do usuario"),
+        max_length=LONG_FILED_LENGTH,
+        blank=True,
+        null=True,
+        help_text=_("Optional. Write a short biography about the user.")
+    )
+    
+    def __str__(self)->str:
+        return f'profile - {self.user.name}'
+    
+    def get_user_image_url(self)->str:
+        if self.user.image:
+            return self.user.image.url
+        
+        return ''
+    
+    class Meta:
+        verbose_name = _("Perfil")
+        verbose_name_plural = _("Perfis")
+        ordering = ['-created_at']

@@ -3,7 +3,20 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
+#models
+from account.models import Profile
+
+USER = get_user_model()
+
+#inlines
+class ProfileInline(admin.TabularInline):
+    model = Profile
+    extra = 0
+    verbose_name = _("Perfil")
+    
 #models admin
+
+@admin.register(USER)
 class UserAdmin(BaseUserAdmin):
     model = get_user_model()
     list_display = ('username', 'email', 'name', 'is_staff')
@@ -23,6 +36,10 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('username', 'email')
     search_help_text = _("Search by username or email.")
     ordering = ('username',)
+    inlines = [ProfileInline]
 
-# Register your models here.
-admin.site.register(get_user_model(), UserAdmin)
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    model = Profile
+    list_display = ['user']
+    
