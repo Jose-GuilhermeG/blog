@@ -3,6 +3,7 @@ from django.db import models
 from api.core.constants import LONG_FILED_LENGTH, MEDIUM_FILED_LENGTH
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
 
 # Create your models here.
 
@@ -95,6 +96,10 @@ class Profile(
             return self.user.image.url
         
         return ''
+    
+    def get_absolute_url(self):
+        return reverse("account:profile", kwargs={"username": self.user.username})
+    
     
     class Meta:
         verbose_name = _("Perfil")

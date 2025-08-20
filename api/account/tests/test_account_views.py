@@ -88,6 +88,10 @@ class LoginViewTest(APITestCase):
     def tearDown(self):
         USER.objects.all().delete()
         
+    def test_if_login_status_is_200(self):
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
     def test_if_view_is_returned_login_message(self):
         response = self.client.post(self.url,self.data)
         expected_message = 'Login successful'

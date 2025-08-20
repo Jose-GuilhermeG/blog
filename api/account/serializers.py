@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 #models
 from django.contrib.auth import get_user_model
+from account.models import Profile
 
 #consts
 USER = get_user_model()
@@ -40,9 +41,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         fields = self.validated_data
         password = fields.pop('password')
-        user = USER(**fields)
+        user = USER.objects.create(**fields)
         user.set_password(password)
-        user.save()
         return user
     
 class LoginSerializer(serializers.Serializer):
@@ -71,3 +71,15 @@ class LoginSerializer(serializers.Serializer):
     def save(self, **kwargs):
         user = USER.objects.get(username=self.data.get('username'))
         return user
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = USER
+        fields = ('username','name','image')
+    
+class ProfileSerializer(serializers.ModelSerializer):
+    user =  UserSerializer(read_only=True)
+    
+    class Meta:
+        model = Profile
+        fields = ('user','bio','banner')
